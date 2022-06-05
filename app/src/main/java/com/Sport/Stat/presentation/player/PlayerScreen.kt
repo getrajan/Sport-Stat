@@ -2,6 +2,7 @@ package com.Sport.Stat.presentation.player
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -22,6 +23,8 @@ import androidx.navigation.NavController
 import com.Sport.Stat.R
 import com.Sport.Stat.common.Constants
 import com.Sport.Stat.domain.model.SquadMember
+import com.Sport.Stat.presentation.Screen
+import com.Sport.Stat.presentation.more_info.MoreInfoViewModel
 import com.Sport.Stat.presentation.player.component.PlayerScreenAppBar
 import com.Sport.Stat.presentation.ui.theme.CustomTypography
 import com.Sport.Stat.presentation.ui.theme.RedColor
@@ -29,7 +32,12 @@ import java.math.RoundingMode
 import java.text.DecimalFormat
 
 @Composable
-fun PlayerScreen(navController: NavController, playerViewModel: PlayerViewModel) {
+fun PlayerScreen(
+    navController: NavController,
+    playerViewModel: PlayerViewModel,
+    moreInfoViewModel: MoreInfoViewModel,
+) {
+    val player: SquadMember? = playerViewModel.player.value
     Scaffold(
         topBar = {
             PlayerScreenAppBar(navController = navController)
@@ -40,7 +48,13 @@ fun PlayerScreen(navController: NavController, playerViewModel: PlayerViewModel)
                     .fillMaxWidth()
                     .padding(vertical = 18.dp, horizontal = 40.dp)
                     .clip(shape = RoundedCornerShape(8.dp))
-                    .background(RedColor),
+                    .background(RedColor)
+                    .clickable {
+                        if (player != null) {
+                            moreInfoViewModel.setPlayer(player)
+                            navController.navigate(Screen.MoreInfoScreen.route)
+                        }
+                    },
                 contentAlignment = Alignment.Center
             ) {
                 Text(
@@ -54,9 +68,8 @@ fun PlayerScreen(navController: NavController, playerViewModel: PlayerViewModel)
             }
         }
     ) {
-        val player: SquadMember? = playerViewModel.player.value
 
-        var detailItemList: ArrayList<String> = arrayListOf()
+        val detailItemList: ArrayList<String> = arrayListOf()
 
         val df = DecimalFormat("#.##")
         df.roundingMode = RoundingMode.DOWN

@@ -3,6 +3,7 @@ package com.Sport.Stat.data.repository
 import com.Sport.Stat.common.Constants.login
 import com.Sport.Stat.common.Constants.token
 import com.Sport.Stat.data.remote.MatchDto.MatchDto
+import com.Sport.Stat.data.remote.MoreInfoDto.MoreInfoDto
 import com.Sport.Stat.data.remote.SportStatApi
 import com.Sport.Stat.data.remote.TeamSquadDto.TeamSquadDto
 import com.Sport.Stat.domain.repository.AppRepository
@@ -21,6 +22,15 @@ class AppRepositoryImpl @Inject constructor(
             token = token,
             task = "squaddata",
             team = teamId
+        )
+    }
+
+    override suspend fun getPlayerMoreInfo(playerId: String): MoreInfoDto {
+        return api.getPlayerMoreInfo(
+            login = login,
+            token = token,
+            task = "playerdata",
+            player = playerId
         )
     }
 }

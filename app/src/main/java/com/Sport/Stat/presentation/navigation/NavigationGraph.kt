@@ -9,6 +9,8 @@ import com.Sport.Stat.presentation.Screen
 import com.Sport.Stat.presentation.match.MatchScreen
 import com.Sport.Stat.presentation.match.MatchViewModel
 import com.Sport.Stat.presentation.matches.MatchesScreen
+import com.Sport.Stat.presentation.more_info.MoreInfoScreen
+import com.Sport.Stat.presentation.more_info.MoreInfoViewModel
 import com.Sport.Stat.presentation.player.PlayerScreen
 import com.Sport.Stat.presentation.player.PlayerViewModel
 import com.Sport.Stat.presentation.splash.SplashScreen
@@ -18,6 +20,7 @@ fun NavigationGraph(navController: NavHostController) {
 
     val matchViewModel: MatchViewModel = hiltViewModel()
     val playerViewModel: PlayerViewModel = hiltViewModel()
+    val moreInfoViewModel: MoreInfoViewModel = hiltViewModel()
 
     NavHost(
         navController = navController,
@@ -33,7 +36,17 @@ fun NavigationGraph(navController: NavHostController) {
             MatchScreen(navController, matchViewModel, playerViewModel)
         }
         composable(route = Screen.PlayerScreen.route) {
-            PlayerScreen(navController = navController, playerViewModel)
+            PlayerScreen(
+                navController,
+                playerViewModel,
+                moreInfoViewModel
+            )
+        }
+        composable(route = Screen.MoreInfoScreen.route) {
+            MoreInfoScreen(
+                navController,
+                moreInfoViewModel
+            )
         }
     }
 
